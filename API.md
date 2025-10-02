@@ -2,28 +2,27 @@
 
 ## REST Endpoints
 
-### Articles Resource
+Based on ARC42 architecture, this API provides access to topics (folders) from a network drive.
 
-#### List All Articles (with HATEOAS)
+### Topics Resource (To Be Implemented)
+
+#### List All Topics (with HATEOAS)
 ```http
-GET /api/articles
+GET /topics
 Accept: application/hal+json
 ```
 
-Response:
+Expected Response:
 ```json
 {
   "_embedded": {
-    "articleList": [
+    "topicList": [
       {
-        "id": 1,
-        "title": "Article Title",
-        "content": "Article content...",
-        "publishedDate": "2025-10-02T07:40:59.090894733",
-        "author": "Admin",
+        "name": "topic1",
+        "path": "/topic1",
         "_links": {
           "self": {
-            "href": "http://localhost:8080/api/articles/1"
+            "href": "http://localhost:8080/topics/topic1"
           }
         }
       }
@@ -31,7 +30,7 @@ Response:
   },
   "_links": {
     "self": {
-      "href": "http://localhost:8080/api/articles"
+      "href": "http://localhost:8080/topics"
     },
     "atom-feed": {
       "href": "/feed/atom"
@@ -43,43 +42,17 @@ Response:
 }
 ```
 
-#### Get Single Article
+#### Get Topic Files
 ```http
-GET /api/articles/{id}
+GET /topics/{name}
 Accept: application/hal+json
 ```
 
-#### Create Article
-```http
-POST /api/articles
-Content-Type: application/json
+Response will vary based on folder structure:
+- **Flat listing**: If topic contains "ausgabe" subfolder (configurable keyword)
+- **Tree listing**: For all other folder structures
 
-{
-  "title": "New Article",
-  "content": "Article content",
-  "author": "John Doe"
-}
-```
-
-#### Update Article
-```http
-PUT /api/articles/{id}
-Content-Type: application/json
-
-{
-  "title": "Updated Title",
-  "content": "Updated content",
-  "publishedDate": "2025-10-02T10:00:00",
-  "author": "Jane Doe"
-}
-```
-
-#### Delete Article
-```http
-DELETE /api/articles/{id}
-```
-
-### Feed Resources
+### Feed Resources (To Be Implemented)
 
 #### Atom Feed
 ```http
@@ -87,7 +60,7 @@ GET /feed/atom
 Accept: application/atom+xml
 ```
 
-Returns Atom 1.0 feed with all articles.
+Returns Atom 1.0 feed with latest file changes from all topics.
 
 #### RSS Feed
 ```http
@@ -95,46 +68,18 @@ GET /feed/rss
 Accept: application/rss+xml
 ```
 
-Returns RSS 2.0 feed with all articles.
+Returns RSS 2.0 feed with latest file changes from all topics.
 
-## Examples with curl
+## Examples with curl (To Be Implemented)
 
-### Get all articles
+### Get all topics
 ```bash
-curl http://localhost:8080/api/articles
+curl http://localhost:8080/topics
 ```
 
-### Get specific article
+### Get specific topic files
 ```bash
-curl http://localhost:8080/api/articles/1
-```
-
-### Create article
-```bash
-curl -X POST http://localhost:8080/api/articles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "My Article",
-    "content": "Article content here",
-    "author": "John Doe"
-  }'
-```
-
-### Update article
-```bash
-curl -X PUT http://localhost:8080/api/articles/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Updated Title",
-    "content": "Updated content",
-    "publishedDate": "2025-10-02T10:00:00",
-    "author": "Jane Doe"
-  }'
-```
-
-### Delete article
-```bash
-curl -X DELETE http://localhost:8080/api/articles/1
+curl http://localhost:8080/topics/topic1
 ```
 
 ### Get Atom feed
@@ -152,24 +97,15 @@ curl http://localhost:8080/feed/rss
 When Basic Authentication is enabled (`security.basic.enabled=true`):
 
 ```bash
-# Get articles with authentication
-curl -u user:password http://localhost:8080/api/articles
-
-# Create article with authentication
-curl -u admin:admin -X POST http://localhost:8080/api/articles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Authenticated Article",
-    "content": "Content",
-    "author": "Admin"
-  }'
+# Get topics with authentication
+curl -u user:password http://localhost:8080/topics
 ```
 
 ## HATEOAS Links
 
-All article resources include HATEOAS links for navigation:
+All topic resources will include HATEOAS links for navigation:
 - `self`: Link to the current resource
-- `all-articles`: Link to all articles
+- `all-topics`: Link to all topics
 - `atom-feed`: Link to Atom feed
 - `rss-feed`: Link to RSS feed
 
