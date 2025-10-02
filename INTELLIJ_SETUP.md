@@ -10,7 +10,7 @@
 
 ## Project Structure
 
-The project follows standard Spring Boot conventions:
+The project follows standard Spring Boot conventions with ARC42 architecture:
 
 ```
 fs2rest/
@@ -23,16 +23,22 @@ fs2rest/
 │   │   │   ├── controller/
 │   │   │   │   ├── ArticleController.java    # REST API controller
 │   │   │   │   └── FeedController.java       # Feed endpoints
-│   │   │   └── model/
-│   │   │       └── Article.java              # Domain model
+│   │   │   ├── model/
+│   │   │   │   └── Article.java              # Domain model
+│   │   │   └── service/
+│   │   │       ├── FeedGenerator.java        # Feed generation service
+│   │   │       └── FileService.java          # File system access service
 │   │   └── resources/
 │   │       └── application.properties         # Application config
 │   └── test/
 │       └── java/de/shippie/fs2rest/
 │           ├── Fs2restApplicationTests.java
-│           └── controller/
-│               ├── ArticleControllerTests.java
-│               └── FeedControllerTests.java
+│           ├── controller/
+│           │   ├── ArticleControllerTests.java
+│           │   └── FeedControllerTests.java
+│           └── service/
+│               ├── FeedGeneratorTests.java
+│               └── FileServiceTests.java
 ├── build.gradle.kts                          # Gradle build file
 ├── settings.gradle.kts                       # Gradle settings
 └── README.md
