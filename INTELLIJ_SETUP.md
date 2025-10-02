@@ -20,11 +20,6 @@ fs2rest/
 │   │   │   ├── Fs2restApplication.java       # Main application class
 │   │   │   ├── config/
 │   │   │   │   └── SecurityConfig.java       # Security configuration
-│   │   │   ├── controller/
-│   │   │   │   ├── ArticleController.java    # REST API controller
-│   │   │   │   └── FeedController.java       # Feed endpoints
-│   │   │   ├── model/
-│   │   │   │   └── Article.java              # Domain model
 │   │   │   └── service/
 │   │   │       ├── FeedGenerator.java        # Feed generation service
 │   │   │       └── FileService.java          # File system access service
@@ -33,16 +28,20 @@ fs2rest/
 │   └── test/
 │       └── java/de/shippie/fs2rest/
 │           ├── Fs2restApplicationTests.java
-│           ├── controller/
-│           │   ├── ArticleControllerTests.java
-│           │   └── FeedControllerTests.java
 │           └── service/
-│               ├── FeedGeneratorTests.java
 │               └── FileServiceTests.java
 ├── build.gradle.kts                          # Gradle build file
 ├── settings.gradle.kts                       # Gradle settings
 └── README.md
 ```
+
+## Architecture Overview
+
+Based on ARC42 specification:
+- **FileService**: Accesses network drive and reads topics (folders)
+- **FeedGenerator**: Creates RSS/Atom feeds from file system topics
+- **SecurityConfig**: Optional authentication via Keycloak/OpenID Connect
+- **TopicController** (to be implemented): REST API with HATEOAS for topics
 
 ## Running the Application
 
@@ -111,20 +110,19 @@ Then restart the application. Changes to code will trigger automatic restart.
 ### REST Client
 Use IntelliJ's built-in HTTP client to test endpoints:
 1. Create a file named `api-test.http`
-2. Add requests:
+2. Add requests (to be implemented):
 ```http
-### Get all articles
-GET http://localhost:8080/api/articles
+### Get all topics
+GET http://localhost:8080/topics
 
-### Create article
-POST http://localhost:8080/api/articles
-Content-Type: application/json
+### Get specific topic
+GET http://localhost:8080/topics/topic1
 
-{
-  "title": "Test Article",
-  "content": "Test content",
-  "author": "Developer"
-}
+### Get Atom feed
+GET http://localhost:8080/feed/atom
+
+### Get RSS feed
+GET http://localhost:8080/feed/rss
 ```
 
 ### Spring Boot Dashboard

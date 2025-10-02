@@ -2,14 +2,16 @@
 
 A modern REST API application built with Spring Boot 3, Java (configurable), and Gradle Kotlin DSL.
 
+Based on ARC42 architecture for providing topics (folders) from a network drive as REST API with HATEOAS and Feed support.
+
 ## Features
 
 - **Spring Boot 3** (Latest version 3.4.1)
 - **Java 17+** with Gradle toolchain support (configured for Java 17, can be upgraded to Java 25 when available)
-- **REST API** with full CRUD operations
-- **HATEOAS** support for hypermedia-driven API
-- **Atom/RSS Feed** support for content syndication
-- **Optional Basic Authentication** (configurable)
+- **REST API** with HATEOAS for navigating file system topics
+- **Atom/RSS Feed** support for subscribable content changes
+- **Optional Basic Authentication** (configurable with Keycloak/OpenID Connect)
+- **File System Access** to read topics and files from network drive
 - **Gradle Kotlin DSL** for build configuration
 - **IntelliJ IDEA** ready
 
@@ -36,46 +38,23 @@ The application will start on `http://localhost:8080`
 
 ## API Endpoints
 
-### Articles API (REST with HATEOAS)
+### Topics API (REST with HATEOAS)
 
-- `GET /api/articles` - Get all articles with HATEOAS links
-- `GET /api/articles/{id}` - Get a specific article
-- `POST /api/articles` - Create a new article
-- `PUT /api/articles/{id}` - Update an article
-- `DELETE /api/articles/{id}` - Delete an article
+**To be implemented:**
+- `GET /topics` - Get all topics (folders) with HATEOAS links
+- `GET /topics/{name}` - Get files for a specific topic
+  - Flat representation for folders with "ausgabe" keyword
+  - Tree representation for other folder structures
 
 ### Feed Endpoints
 
+**To be implemented:**
 - `GET /feed/atom` - Get Atom feed (application/atom+xml)
 - `GET /feed/rss` - Get RSS feed (application/rss+xml)
 
 ## Example API Usage
 
-### Get all articles
-```bash
-curl http://localhost:8080/api/articles
-```
-
-### Create a new article
-```bash
-curl -X POST http://localhost:8080/api/articles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "My Article",
-    "content": "Article content",
-    "author": "John Doe"
-  }'
-```
-
-### Get Atom feed
-```bash
-curl http://localhost:8080/feed/atom
-```
-
-### Get RSS feed
-```bash
-curl http://localhost:8080/feed/rss
-```
+**To be implemented:** API endpoints will provide access to file system topics.
 
 ## Configuration
 
@@ -84,6 +63,12 @@ Configuration can be modified in `src/main/resources/application.properties`:
 ```properties
 # Server port
 server.port=8080
+
+# Network drive path for topics
+fs2rest.topics.path=/path/to/network/drive
+
+# Keyword for flat file listing (default: "ausgabe")
+fs2rest.topics.flat-keyword=ausgabe
 
 # Enable/disable Basic Authentication
 security.basic.enabled=false
@@ -94,14 +79,10 @@ security.basic.enabled=false
 To enable optional Basic Authentication:
 
 1. Set `security.basic.enabled=true` in `application.properties`
-2. Use credentials:
+2. Configure Keycloak/OpenID Connect (see SecurityConfig.java)
+3. Or use test credentials:
    - Username: `user` / Password: `password` (USER role)
    - Username: `admin` / Password: `admin` (ADMIN role)
-
-Example with authentication:
-```bash
-curl -u user:password http://localhost:8080/api/articles
-```
 
 ## Running Tests
 
