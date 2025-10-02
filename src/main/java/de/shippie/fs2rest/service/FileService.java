@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class FileService {
     
     // TODO: Implement file system access
-    // - Read directory structures from network drive
-    // - Support flat listing for "ausgabe" folders
+    // - Read directory structures from local drive / mount on linux or windows
+    // - Support flat listing for "ausgabe" folders 
     // - Support tree-based listing for other structures
     // - Configuration for keyword (default: "ausgabe")
+    // refresh file structure every 10 minutes (Configuration possible)
+    // Application architecure is with internal events (Domain Driven Design)
     
 }
