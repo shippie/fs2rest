@@ -1,0 +1,57 @@
+### Get all articles
+GET http://localhost:8080/api/articles
+Accept: application/hal+json
+
+### Get specific article
+GET http://localhost:8080/api/articles/1
+Accept: application/hal+json
+
+### Create new article
+POST http://localhost:8080/api/articles
+Content-Type: application/json
+
+{
+  "title": "New Article from HTTP Client",
+  "content": "This article was created using IntelliJ HTTP Client",
+  "author": "Developer"
+}
+
+### Update article (replace {id} with actual article id)
+PUT http://localhost:8080/api/articles/1
+Content-Type: application/json
+
+{
+  "title": "Updated Article",
+  "content": "Updated content",
+  "publishedDate": "2025-10-02T10:00:00",
+  "author": "Updated Author"
+}
+
+### Delete article (replace {id} with actual article id)
+DELETE http://localhost:8080/api/articles/1
+
+### Get Atom feed
+GET http://localhost:8080/feed/atom
+Accept: application/atom+xml
+
+### Get RSS feed
+GET http://localhost:8080/feed/rss
+Accept: application/rss+xml
+
+### Examples with Basic Authentication (when enabled)
+
+### Get articles with auth
+GET http://localhost:8080/api/articles
+Accept: application/hal+json
+Authorization: Basic user password
+
+### Create article with auth
+POST http://localhost:8080/api/articles
+Content-Type: application/json
+Authorization: Basic admin admin
+
+{
+  "title": "Authenticated Article",
+  "content": "Created with authentication",
+  "author": "Admin User"
+}
